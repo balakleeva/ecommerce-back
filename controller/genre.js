@@ -8,7 +8,7 @@ async function getAll(req, res) {
 
 async function create(req, res) {
   const { name, genreType } = req.body;
-console.log('..........', genreType);
+
   const genre = await Genre.create({ name, genreType });
 
   res.status(200).json({ data: genre });

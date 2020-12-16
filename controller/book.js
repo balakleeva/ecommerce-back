@@ -1,11 +1,15 @@
-const { Book, Genre, Author } = require('../model');
+const { Book } = require('../model');
 
 async function getAll(req, res) {
-  const books = await Book.findAll({
-    include: ['genre', 'author']
-  });
+  const books = await Book.findAll();
 
   res.status(200).json({ data: books });
+}
+
+async function getOne(req, res) {
+  const book = await Book.findOne({ id: req.params.id, include: ['genre', 'author'] })
+
+  res.status(200).json({ data: book });
 }
 
 async function create(req, res) {
@@ -16,5 +20,6 @@ async function create(req, res) {
 
 module.exports = {
   getAll,
+  getOne,
   create,
 }
