@@ -3,19 +3,24 @@ const bcrypt = require('bcrypt');
 
 module.exports = (sequelize) => {
   class Client extends Model {
-    comparePassword(hash) {
-      return bcrypt.compareSync(this.password, hash);
+    comparePassword(password) {
+      return bcrypt.compareSync(password, this.password);
     }
   }
 
   Client.init({
-    name: {
+    login: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     phone: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,

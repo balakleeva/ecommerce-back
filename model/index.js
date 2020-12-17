@@ -10,6 +10,7 @@ const Book = require('./Book')(sequelize);
 Book.Genre = Book.belongsTo(Genre, { as: 'genre' });
 Book.Author = Book.belongsTo(Author, { as: 'author' });
 
+// Client.sync({ force: true });
 module.exports = {
   sequelize,
   Author,

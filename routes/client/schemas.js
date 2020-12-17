@@ -4,7 +4,13 @@ const schemas = {
     post: Joi.object({
         name: Joi.string().min(5).required(),
         phone: Joi.string().min(5).required(),
-    })
+        login: Joi.string().min(5).required(),
+        password: Joi.string().min(5).required(),
+    }),
+    auth: Joi.object({
+        login: Joi.string().min(5).required(),
+        password: Joi.string().min(5).required(),
+    }),
 };
 
 module.exports = schemas;

@@ -7,19 +7,52 @@ async function getAll(req, res) {
 }
 
 async function getOne(req, res) {
-  const book = await Book.findOne({ id: req.params.id, include: ['genre', 'author'] })
+  const { id } = req.params;
+  const book = await Book.findOne({ where: { id }, include: ['genre', 'author'] })
 
   res.status(200).json({ data: book });
 }
 
 async function create(req, res) {
-  const book = await Book.create({ name: 'Test Name', genreId: 1, authorId: 1, publisher: 'publisher', publishYear: '2002' });
+  const { name, genreId, authorId, publisher, publishYear } = req.body;
+  const book = await Book.create({
+    name, genreId, authorId, publisher, publishYear
+  });
 
   res.status(200).json({ data: book });
+}
+
+async function update(req, res) {
+  const { id } = req.params;
+  const book = await Book.findOne({ where: { id } });
+
+  if (!book) {
+    return res.status(404).json({ message: 'Book is not found!' });
+  }
+
+  const { name, genreId, authorId, publisher, publishYear } = req.body;
+  book.name = name;
+  book.genreId = genreId;
+  book.authorId = authorId;
+  book.publisher = publisher;
+  book.publishYear = publishYear;
+
+  await book.save();
+
+  res.status(200).json({ data: book });
+}
+
+async function remove(req, res) {
+  const { id } = req.params;
+  await Book.destroy({ where: { id }});
+
+  res.send(200).json({ message: 'Book has been remove!'});
 }
 
 module.exports = {
   getAll,
   getOne,
   create,
+  update,
+  remove,
 }
