@@ -7,6 +7,7 @@ const schemas = {
     authorId: Joi.number().required(),
     publisher: Joi.string().min(2).required(),
     publishYear: Joi.string().min(2).required(),
+    image: Joi.string().min(2),
   }),
   params: Joi.object({
     id: Joi.string().required(),

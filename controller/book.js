@@ -14,9 +14,9 @@ async function getOne(req, res) {
 }
 
 async function create(req, res) {
-  const { name, genreId, authorId, publisher, publishYear } = req.body;
+  const { name, genreId, authorId, publisher, publishYear, image } = req.body;
   const book = await Book.create({
-    name, genreId, authorId, publisher, publishYear
+    name, genreId, authorId, publisher, publishYear, image
   });
 
   res.status(200).json({ data: book });
@@ -30,8 +30,9 @@ async function update(req, res) {
     return res.status(404).json({ message: 'Book is not found!' });
   }
 
-  const { name, genreId, authorId, publisher, publishYear } = req.body;
+  const { name, genreId, authorId, publisher, publishYear, image } = req.body;
   book.name = name;
+  book.image = image;
   book.genreId = genreId;
   book.authorId = authorId;
   book.publisher = publisher;
