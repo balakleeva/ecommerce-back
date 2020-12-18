@@ -14,7 +14,16 @@ async function create(req, res) {
   res.status(200).json({ data: author });
 }
 
+async function deleteAuthor(req, res) {
+  const { id } = req.params
+
+  await Author.destroy({ where: { id } })
+
+  res.send(200).json({ message: 'Author has been removed!' });
+}
+
 module.exports = {
   getAll,
   create,
+  deleteAuthor
 }

@@ -8,6 +8,8 @@ const schemas = {
     publisher: Joi.string().min(2).required(),
     publishYear: Joi.string().min(2).required(),
     image: Joi.string().min(2),
+    buyPrice: Joi.number(),
+    rentPrice: Joi.number(),
   }),
   params: Joi.object({
     id: Joi.string().required(),

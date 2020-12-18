@@ -6,5 +6,6 @@ const joiMiddleware = require('../../middleware/joi');
 
 author.get('/', controller.getAll);
 author.post('/', joiMiddleware(schemas.post, 'body'), controller.create);
+author.delete('/:id', joiMiddleware(schemas.params, 'params'), controller.deleteAuthor)
 
 module.exports = author;

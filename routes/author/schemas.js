@@ -4,6 +4,9 @@ const schemas = {
   post: Joi.object({
     name: Joi.string().min(5).required(),
     bio: Joi.string().required(),
+  }),
+  params: Joi.object({
+    id: Joi.string().required(),
   })
 };
 
