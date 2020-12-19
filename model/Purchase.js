@@ -4,7 +4,9 @@ module.exports = (sequelize) => {
     }
 
     Purchase.init({
-
+        buySum: {
+            type: DataTypes.FLOAT,
+        }
     }, {
         sequelize,
     });

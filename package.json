@@ -21,6 +21,12 @@
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
-    "node-dev": "^6.2.0"
+    "node-dev": "^6.2.0",
+    "prettier": "^2.2.1"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "singleQuote": true,
+    "semi": false
   }
 }

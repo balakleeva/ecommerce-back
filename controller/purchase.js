@@ -19,7 +19,15 @@ async function create(req, res) {
 
     const clientId = req.user.id
 
-    const purchase = await Purchase.create({ clientId, clientId });
+    const books = await Book.findAll({ where: { id: bookIds } })
+
+    const buySum = books.reduce((acc, book) => {
+        return acc + book.buyPrice
+    }, 0)
+
+    const purchase = await Purchase.create({ clientId, buySum });
+
+    console.log('sum', buySum)
 
     await bookIds.forEach(async (book) => {
         await purchase.addBook(book)
@@ -34,7 +42,15 @@ async function createAdmin(req, res) {
     // TODO clients....
     const adminId = req.admin.id
 
-    const purchase = await Purchase.create({ adminId });
+    const books = await Book.findAll({ where: { id: bookIds } })
+
+    const buySum = books.reduce((acc, book) => {
+        return acc + book.buyPrice
+    }, 0)
+
+    const client = clientId ? clientId : null
+
+    const purchase = await Purchase.create({ adminId, buySum, clientId: client });
 
     await bookIds.forEach(async (book) => {
         await purchase.addBook(book)
