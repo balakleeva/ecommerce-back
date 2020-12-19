@@ -4,6 +4,7 @@ const author = require('./author');
 const client = require('./client');
 const genre = require('./genre');
 const book = require('./book');
+const purchase = require('./purchase')
 const api = Router();
 
 api.use('/admin', admin);
@@ -11,5 +12,6 @@ api.use('/author', author);
 api.use('/client', client);
 api.use('/genre', genre);
 api.use('/book', book);
+api.use('/purchase', purchase);
 
 module.exports = api;
