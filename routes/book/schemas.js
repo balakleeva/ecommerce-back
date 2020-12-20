@@ -10,6 +10,7 @@ const schemas = {
     image: Joi.string().min(2),
     buyPrice: Joi.number(),
     rentPrice: Joi.number(),
+    quantity: Joi.number(),
   }),
   params: Joi.object({
     id: Joi.string().required(),
