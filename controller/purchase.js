@@ -1,4 +1,5 @@
 const { Purchase, Book } = require('../model')
+const Sequelize = require('sequelize')
 
 async function getAll(req, res) {
   const purchases = await Purchase.findAll({ include: [Book, 'client'] })
@@ -65,7 +66,16 @@ async function createAdmin(req, res) {
 }
 
 async function mostExpensive(req, res) {
-  const purchase = await Purchase.findOne({})
+  const maxPrice = await Purchase.findAll({
+    attributes: [[Sequelize.fn('max', Sequelize.col('buySum')), 'maxSum']],
+    raw: true,
+  })
+
+  const purchase = await Purchase.findOne({
+    where: { buySum: maxPrice[0].maxSum },
+  })
+
+  res.status(200).json({ data: purchase })
 }
 
 module.exports = {
@@ -73,4 +83,5 @@ module.exports = {
   getOne,
   create,
   createAdmin,
+  mostExpensive,
 }

@@ -98,8 +98,6 @@ async function createAdmin(req, res) {
 async function search(req, res) {
   const { client, rentMonth, isReturned } = req.query
 
-  console.log('----------------------------', rentMonth)
-
   let searchParams = {}
   let clientParams = {}
 
@@ -136,6 +134,33 @@ async function search(req, res) {
   res.status(200).json({ data: rents })
 }
 
+async function currentRent(req, res) {
+  const rents = (
+    await Rent.findAll({
+      where: { isReturned: false },
+      include: [Book, 'client'],
+    })
+  ).filter((rent) => {
+    if (new Date() >= rent.createdAt && new Date() <= rent.returnDate) {
+      return rent
+    }
+  })
+
+  res.status(200).json({ data: rents })
+}
+
+async function markOutdated(req, res) {
+  const { id } = req.params
+
+  const rent = await Rent.findOne({ where: { id } })
+
+  rent.isOutdated = true
+
+  await rent.save()
+
+  res.status(200).json({ data: rent })
+}
+
 module.exports = {
   getAll,
   getOne,
@@ -143,4 +168,6 @@ module.exports = {
   create,
   createAdmin,
   search,
+  currentRent,
+  markOutdated,
 }

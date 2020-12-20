@@ -1,4 +1,4 @@
-const { Book, Author } = require('../model')
+const { Book, Author, Purchase } = require('../model')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
@@ -149,6 +149,28 @@ async function search(req, res) {
   res.status(200).json({ data: books })
 }
 
+async function mostPopular(req, res) {
+  const book = await Book.findAll({
+    group: ['Purchase.bookId'],
+    attributes: [
+      [Sequelize.fn('count', Sequelize.col('Purchases.bookId')), 'test'],
+    ],
+    include: Purchase,
+    raw: true,
+  })
+
+  // const book = await Purchase.findAll({
+  //   group: ['Books.id', 'Book_Purchase.createdAt'],
+  //   attributes: [[Sequelize.fn('count', Sequelize.col('Books.id')), 'test']],
+  //   raw: true,
+  //   include: [Book, 'Book_Purchase'],
+  // })
+
+  console.log('book', book)
+
+  res.status(200).json({ data: book })
+}
+
 module.exports = {
   getAll,
   getOne,
@@ -157,4 +179,5 @@ module.exports = {
   remove,
   getByIds,
   search,
+  mostPopular,
 }

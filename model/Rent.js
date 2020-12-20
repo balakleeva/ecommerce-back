@@ -5,14 +5,18 @@ module.exports = (sequelize) => {
   Rent.init(
     {
       returnDate: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
       },
       rentSum: {
         type: DataTypes.FLOAT,
       },
       isReturned: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
+      },
+      isOutdated: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {
