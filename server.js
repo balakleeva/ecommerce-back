@@ -15,6 +15,7 @@ sequelize.authenticate().then(async () => {
 const port = process.env.PORT || 8000
 
 server.use(bodyParser.json());
+server.use(require('express-pdf'));
 server.use('/api', api);
 
 server.listen(port, () => {

@@ -152,26 +152,36 @@ async function search(req, res) {
 }
 
 async function mostPopular(req, res) {
-  // const book = await Book.findAll({
-  //   group: ['Purchase.bookId'],
-  //   attributes: [
-  //     [Sequelize.fn('count', Sequelize.col('Purchases.bookId')), 'test'],
-  //   ],
-  //   include: Purchase,
-  //   raw: true,
-  // });
 
-  const [data] = await sequelize.query('SELECT COUNT(*) as book_count, "public"."Book_Purchase"."BookId" FROM "public"."Book_Purchase" group by "public"."Book_Purchase"."BookId" ORDER BY book_count DESC');
-  // const book = await Purchase.findAll({
-  //   group: ['Books.id', 'Book_Purchase.createdAt'],
-  //   attributes: [[Sequelize.fn('count', Sequelize.col('Books.id')), 'test']],
-  //   raw: true,
-  //   include: [Book, 'Book_Purchase'],
-  // })
+  const [data] = await sequelize.query(`
+      SELECT COUNT(*) as book_count, "public"."Book_Purchase"."BookId", "public"."Books"."name" as name
+      FROM "public"."Book_Purchase"
+      INNER JOIN "public"."Books" ON "public"."Books"."id" = "public"."Book_Purchase"."BookId"
+      GROUP BY "public"."Book_Purchase"."BookId", name
+      ORDER BY book_count DESC
+  `);
 
-  // console.log('book', book)
 
-  res.status(200).json({ data })
+  res.pdfFromHTML({
+    filename: 'generated.pdf',
+    htmlContent: `
+      <html>
+          <body>
+            <table>
+                <thead>
+                <tr>
+                    <th>Count</th>
+                    <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.map(a => `<tr><td>${a.book_count}</td><td>${a.name}</td></tr>`).join('')}
+                </tbody>
+            </table>
+          </body>
+      </html>
+`,
+  });
 }
 
 module.exports = {
