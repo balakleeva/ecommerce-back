@@ -1,4 +1,4 @@
-const { Purchase, Book } = require('../model')
+const { Purchase, Book, Client } = require('../model')
 const Sequelize = require('sequelize')
 
 async function getAll(req, res) {
@@ -41,7 +41,7 @@ async function create(req, res) {
 }
 
 async function createAdmin(req, res) {
-  const { bookIds, clientId } = req.body
+  const { bookIds, client, isNew } = req.body
 
   // TODO clients....
   const adminId = req.admin.id
@@ -52,9 +52,14 @@ async function createAdmin(req, res) {
     return acc + book.buyPrice
   }, 0)
 
-  const client = clientId ? clientId : null
+  const clientId = !isNew ? client : null
 
-  const purchase = await Purchase.create({ adminId, buySum, clientId: client })
+  const purchase = await Purchase.create({
+    adminId,
+    buySum,
+    clientId,
+    guestName: isNew ? client : '',
+  })
 
   await bookIds.forEach(async (book) => {
     await purchase.addBook(book)

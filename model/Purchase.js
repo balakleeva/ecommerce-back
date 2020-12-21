@@ -1,15 +1,21 @@
-const { DataTypes, Model } = require('sequelize');
+const { DataTypes, Model } = require('sequelize')
 module.exports = (sequelize) => {
-    class Purchase extends Model {
+  class Purchase extends Model {}
+
+  Purchase.init(
+    {
+      buySum: {
+        type: DataTypes.FLOAT,
+      },
+      guestName: {
+        type: DataTypes.STRING,
+        defaultValue: '',
+      },
+    },
+    {
+      sequelize,
     }
+  )
 
-    Purchase.init({
-        buySum: {
-            type: DataTypes.FLOAT,
-        }
-    }, {
-        sequelize,
-    });
-
-    return Purchase;
-};
+  return Purchase
+}

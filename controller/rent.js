@@ -11,7 +11,7 @@ async function getAll(req, res) {
 async function getOne(req, res) {
   const { id } = req.params
 
-  const rent = await Rent.findOne({ where: { id } })
+  const rent = await Rent.findOne({ where: { id }, include: [Book, 'client'] })
 
   res.status(200).json({ data: rent })
 }

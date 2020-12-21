@@ -18,6 +18,10 @@ module.exports = (sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      guestName: {
+        type: DataTypes.STRING,
+        defaultValue: '',
+      },
     },
     {
       sequelize,

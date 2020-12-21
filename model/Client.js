@@ -1,10 +1,10 @@
-const { DataTypes, Model } = require('sequelize');
-const bcrypt = require('bcrypt');
+const { DataTypes, Model } = require('sequelize')
+const bcrypt = require('bcrypt')
 
 module.exports = (sequelize) => {
   class Client extends Model {
     comparePassword(password) {
-      return bcrypt.compareSync(password, this.password);
+      return bcrypt.compareSync(password, this.password)
     }
   }
 
@@ -31,8 +31,8 @@ module.exports = (sequelize) => {
   });
 
   Client.beforeCreate(async (user) => {
-    const hashPass = await bcrypt.hashSync(user.password, 10);
-    user.password = hashPass;
-  });
-  return Client;
-};
+    const hashPass = await bcrypt.hashSync(user.password, 10)
+    user.password = hashPass
+  })
+  return Client
+}
