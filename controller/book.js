@@ -1,6 +1,7 @@
-const { Book, Author, Purchase } = require('../model')
+const { Book, Author, Purchase, sequelize } = require('../model')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
+const QueryTypes = sequelize.QueryTypes;
 
 async function getAll(req, res) {
   const books = await Book.findAll()
@@ -29,7 +30,8 @@ async function create(req, res) {
     buyPrice,
     rentPrice,
     quantity,
-  } = req.body
+  } = req.body;
+
   const book = await Book.create({
     name,
     genreId,
@@ -150,15 +152,16 @@ async function search(req, res) {
 }
 
 async function mostPopular(req, res) {
-  const book = await Book.findAll({
-    group: ['Purchase.bookId'],
-    attributes: [
-      [Sequelize.fn('count', Sequelize.col('Purchases.bookId')), 'test'],
-    ],
-    include: Purchase,
-    raw: true,
-  })
+  // const book = await Book.findAll({
+  //   group: ['Purchase.bookId'],
+  //   attributes: [
+  //     [Sequelize.fn('count', Sequelize.col('Purchases.bookId')), 'test'],
+  //   ],
+  //   include: Purchase,
+  //   raw: true,
+  // });
 
+  const [data] = await sequelize.query('SELECT COUNT(*) as book_count, "public"."Book_Purchase"."BookId" FROM "public"."Book_Purchase" group by "public"."Book_Purchase"."BookId" ORDER BY book_count DESC');
   // const book = await Purchase.findAll({
   //   group: ['Books.id', 'Book_Purchase.createdAt'],
   //   attributes: [[Sequelize.fn('count', Sequelize.col('Books.id')), 'test']],
@@ -166,9 +169,9 @@ async function mostPopular(req, res) {
   //   include: [Book, 'Book_Purchase'],
   // })
 
-  console.log('book', book)
+  // console.log('book', book)
 
-  res.status(200).json({ data: book })
+  res.status(200).json({ data })
 }
 
 module.exports = {
