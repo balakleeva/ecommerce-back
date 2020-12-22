@@ -162,36 +162,19 @@ async function markOutdated(req, res) {
 }
 
 async function mostPopular(req, res) {
-  const data = [];
-  // const [data] = await sequelize.query(`
-  //     SELECT COUNT(*) as book_count, "public"."Book_Rent"."BookId", "public"."Books"."name" as name
-  //     FROM "public"."Book_Rent"
-  //     INNER JOIN "public"."Books" ON "public"."Books"."id" = "public"."Book_Rent"."BookId"
-  //     GROUP BY "public"."Book_Rent"."BookId", name
-  //     ORDER BY book_count DESC
-  // `).catch(e => console.log('..........', e));
+  const [data] = await sequelize
+    .query(
+      `
+      SELECT COUNT(*) as book_count, "public"."Book_Rent"."BookId", "public"."Books"."name" as name
+      FROM "public"."Book_Rent"
+      INNER JOIN "public"."Books" ON "public"."Books"."id" = "public"."Book_Rent"."BookId"
+      GROUP BY "public"."Book_Rent"."BookId", name
+      ORDER BY book_count DESC
+  `
+    )
+    .catch((e) => console.log('..........', e))
 
-
-  res.pdfFromHTML({
-    filename: 'generated.pdf',
-    htmlContent: `
-      <html>
-          <body>
-            <table>
-                <thead>
-                <tr>
-                    <th>Count</th>
-                    <th>Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${data.map(a => `<tr><td>${a.book_count}</td><td>${a.name}</td></tr>`).join('')}
-                </tbody>
-            </table>
-          </body>
-      </html>
-`,
-  });
+  res.status(200).json({ data: data })
 }
 
 module.exports = {

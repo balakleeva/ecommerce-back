@@ -1,5 +1,6 @@
 const { Purchase, Book, Client } = require('../model')
 const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
 async function getAll(req, res) {
   const purchases = await Purchase.findAll({ include: [Book, 'client'] })
@@ -83,10 +84,51 @@ async function mostExpensive(req, res) {
   res.status(200).json({ data: purchase })
 }
 
+async function search(req, res) {
+  const { buyMonth, clientId, withoutClient } = req.query
+
+  let searchParams = {}
+  let clientParams = {}
+
+  if (clientId && withoutClient === 'false') {
+    clientParams.id = clientId
+  }
+
+  if (withoutClient === 'true') {
+    searchParams.guestName = { [Op.ne]: '' }
+  }
+
+  if (buyMonth) {
+    const firstDayOfMonth = new Date(buyMonth)
+    const lastDayOfMonth = new Date(
+      firstDayOfMonth.getFullYear(),
+      firstDayOfMonth.getMonth() + 1,
+      0
+    )
+    searchParams.createdAt = { [Op.between]: [firstDayOfMonth, lastDayOfMonth] }
+  }
+
+  const purchases = await Purchase.findAll({
+    where: searchParams,
+    include: [
+      Book,
+      {
+        model: Client,
+        as: 'client',
+        where: clientParams,
+        required: withoutClient === 'false',
+      },
+    ],
+  })
+
+  res.status(200).json({ data: purchases })
+}
+
 module.exports = {
   getAll,
   getOne,
   create,
   createAdmin,
   mostExpensive,
+  search,
 }

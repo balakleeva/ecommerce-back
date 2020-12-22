@@ -7,6 +7,7 @@ const adminAuthMiddleware = require('../../middleware/authAdmin')
 const clientAuthMiddleware = require('../../middleware/authClient')
 
 purchase.get('/', adminAuthMiddleware, controller.getAll)
+purchase.get('/search', adminAuthMiddleware, controller.search)
 purchase.get('/most-expensive', adminAuthMiddleware, controller.mostExpensive)
 purchase.get('/:id', adminAuthMiddleware, controller.getOne)
 purchase.post('/create-admin', adminAuthMiddleware, controller.createAdmin)

@@ -1,7 +1,7 @@
 const { Book, Author, Purchase, sequelize } = require('../model')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
-const QueryTypes = sequelize.QueryTypes;
+const QueryTypes = sequelize.QueryTypes
 
 async function getAll(req, res) {
   const books = await Book.findAll()
@@ -30,7 +30,7 @@ async function create(req, res) {
     buyPrice,
     rentPrice,
     quantity,
-  } = req.body;
+  } = req.body
 
   const book = await Book.create({
     name,
@@ -152,36 +152,15 @@ async function search(req, res) {
 }
 
 async function mostPopular(req, res) {
-
   const [data] = await sequelize.query(`
       SELECT COUNT(*) as book_count, "public"."Book_Purchase"."BookId", "public"."Books"."name" as name
       FROM "public"."Book_Purchase"
       INNER JOIN "public"."Books" ON "public"."Books"."id" = "public"."Book_Purchase"."BookId"
       GROUP BY "public"."Book_Purchase"."BookId", name
       ORDER BY book_count DESC
-  `);
+  `)
 
-
-  res.pdfFromHTML({
-    filename: 'generated.pdf',
-    htmlContent: `
-      <html>
-          <body>
-            <table>
-                <thead>
-                <tr>
-                    <th>Count</th>
-                    <th>Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${data.map(a => `<tr><td>${a.book_count}</td><td>${a.name}</td></tr>`).join('')}
-                </tbody>
-            </table>
-          </body>
-      </html>
-`,
-  });
+  res.status(200).json({ data: data })
 }
 
 module.exports = {
