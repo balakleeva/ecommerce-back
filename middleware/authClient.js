@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
-const { Client } = require('../model');
+const jwt = require('jsonwebtoken')
+const { Client } = require('../model')
 
 function clientAuthMiddleware(req, res, next) {
-  const userToken = req.headers['client-authorization'];
+  const userToken = req.headers['client-authorization']
 
   if (!userToken) {
     return res.status(401).json({ message: 'No token' })
@@ -15,7 +15,6 @@ function clientAuthMiddleware(req, res, next) {
 
     const user = await Client.findOne({ where: { id: decoded.id } })
 
-    console.log('here????????????????', user)
     req.user = user
 
     next()

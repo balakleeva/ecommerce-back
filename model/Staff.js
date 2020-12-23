@@ -2,24 +2,22 @@ const { DataTypes, Model } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 module.exports = (sequelize) => {
-    class Admin extends Model {
+    class Staff extends Model {
         comparePassword(password) {
             return bcrypt.compareSync(password, this.password);
         }
     }
-    Admin.init({
+    Staff.init({
         name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
         login: {
             type: DataTypes.STRING,
-            allowNull: false,
             unique: true,
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false
         },
         role: {
             type: DataTypes.ENUM,
@@ -30,10 +28,10 @@ module.exports = (sequelize) => {
         sequelize,
     });
 
-    Admin.beforeCreate(async (admin) => {
-        const hashPass = await bcrypt.hashSync(admin.password, 10);
-        admin.password = hashPass;
+    Staff.beforeCreate(async (staff) => {
+        const hashPass = await bcrypt.hashSync(staff.password, 10);
+        staff.password = hashPass;
     });
 
-    return Admin;
+    return Staff;
 };

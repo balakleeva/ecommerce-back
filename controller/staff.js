@@ -1,4 +1,4 @@
-const { Admin } = require('../model')
+const { Staff } = require('../model')
 const jwt = require('jsonwebtoken')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
@@ -6,32 +6,37 @@ const Op = Sequelize.Op
 async function auth(req, res) {
   const { login, password } = req.body
 
-  const admin = await Admin.findOne({ where: { login } })
-  if (!admin) {
+  const staff = await Staff.findOne({ where: { login } })
+  if (!staff) {
     return res.status(400).json({ message: 'Wrong login!' })
   }
 
-  const isRightPassword = await admin.comparePassword(password)
+  const isRightPassword = await staff.comparePassword(password)
 
   if (!isRightPassword) {
     return res.status(400).json({ message: 'Wrong password!' })
   }
 
-  const token = jwt.sign({ id: admin.id, role: admin.role }, process.env.SECRET)
+  const token = jwt.sign({ id: staff.id, role: staff.role }, process.env.SECRET)
 
   res.status(200).json({ data: token })
 }
 
 async function create(req, res) {
-  const { name, login, password, role } = req.body
+  let { name, login, password, role } = req.body
 
-  const admin = await Admin.create({ name, login, password, role })
+  if (!login) {
+    login = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    password = 'qwerty1234'
+  }
 
-  res.status(200).json({ data: admin })
+  const staff = await Staff.create({ name, login, password, role })
+
+  res.status(200).json({ data: staff })
 }
 
 async function getAll(req, res) {
-  const staff = await Admin.findAll()
+  const staff = await Staff.findAll()
 
   res.status(200).json({ data: staff })
 }
@@ -49,7 +54,7 @@ async function search(req, res) {
     searchParams.role = { [Op.eq]: role }
   }
 
-  const staff = await Admin.findAll({ where: searchParams })
+  const staff = await Staff.findAll({ where: searchParams })
 
   res.status(200).json({ data: staff })
 }

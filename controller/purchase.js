@@ -13,7 +13,7 @@ async function getOne(req, res) {
 
   const purchase = await Purchase.findOne({
     where: { id },
-    include: [Book, 'client', 'admin'],
+    include: [Book, 'client', 'staff'],
   })
 
   res.status(200).json({ data: purchase })
@@ -44,8 +44,9 @@ async function create(req, res) {
 async function createAdmin(req, res) {
   const { bookIds, client, isNew } = req.body
 
+  console.log('req.admin', req.admin)
   // TODO clients....
-  const adminId = req.admin.id
+  const staffId = req.admin.id
 
   const books = await Book.findAll({ where: { id: bookIds } })
 
@@ -56,7 +57,7 @@ async function createAdmin(req, res) {
   const clientId = !isNew ? client : null
 
   const purchase = await Purchase.create({
-    adminId,
+    staffId,
     buySum,
     clientId,
     guestName: isNew ? client : '',

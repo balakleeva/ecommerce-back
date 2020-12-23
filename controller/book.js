@@ -1,7 +1,6 @@
-const { Book, Author, Purchase, sequelize } = require('../model')
+const { Book, Author, sequelize } = require('../model')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
-const QueryTypes = sequelize.QueryTypes
 
 async function getAll(req, res) {
   const books = await Book.findAll()

@@ -65,7 +65,7 @@ async function create(req, res) {
 async function createAdmin(req, res) {
   const { bookIds, clientId } = req.body
 
-  const adminId = req.admin.id
+  const staffId = req.admin.id
 
   const books = await Book.findAll({ where: { id: bookIds } })
 
@@ -80,7 +80,7 @@ async function createAdmin(req, res) {
 
   const rent = await Rent.create({
     clientId: client,
-    adminId,
+    staffId,
     rentSum,
     isReturned: false,
     returnDate: returnDate.toString(),

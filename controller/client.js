@@ -10,7 +10,7 @@ async function getAll(req, res) {
 
 async function create(req, res) {
   const { login, name, phone, password } = req.body;
-console.log('req.body', req.body)
+
   await Client.create({ name, phone, password, login });
 
   res.status(200).json({ message: 'Successful registration!' });

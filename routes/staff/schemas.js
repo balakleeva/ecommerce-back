@@ -9,8 +9,6 @@ const schemas = {
     create: Joi.object({
         name: Joi.string().min(5).required(),
         role: Joi.string().required(),
-        login: Joi.string().min(5),
-        password: Joi.string(),
     })
 };
 
