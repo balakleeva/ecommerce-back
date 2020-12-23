@@ -1,9 +1,9 @@
-const { Purchase, Book, Client, sequelize, Staff } = require('../model');
+const { Purchase, Book, Client, Staff } = require('../model');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 async function getAll(req, res) {
-  const purchases = await Purchase.findAll({ include: [Book, 'client'] });
+  const purchases = await Purchase.findAll({ include: [{ model: Book, paranoid: false }, 'client'] });
 
   res.status(200).json({ data: purchases });
 }
@@ -13,7 +13,7 @@ async function getOne(req, res) {
 
   const purchase = await Purchase.findOne({
     where: { id },
-    include: [Book, 'client', 'staff'],
+    include: [{ model: Book, paranoid: false }, 'client', 'staff'],
   });
 
   res.status(200).json({ data: purchase });
@@ -112,7 +112,7 @@ async function search(req, res) {
   const purchases = await Purchase.findAll({
     where: searchParams,
     include: [
-      Book,
+      { model: Book, paranoid: false },
       {
         model: Client,
         as: 'client',
