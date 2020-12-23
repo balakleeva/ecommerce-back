@@ -30,6 +30,7 @@ Rent.belongsToMany(Book, { through: 'Book_Rent' })
 
 Order.Client = Order.belongsTo(Client, { as: 'client' })
 
+// Author.sync({ force: true });
 // Book.sync({ force: true });
 // Purchase.sync({ force: true });
 // Client.sync({ force: true });

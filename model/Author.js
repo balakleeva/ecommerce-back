@@ -14,6 +14,7 @@ module.exports = (sequelize) => {
     },
   }, {
     sequelize,
+    paranoid: true,
   });
 
   return Author;

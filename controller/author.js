@@ -53,10 +53,19 @@ async function update(req, res) {
   res.status(200).json({ data });
 }
 
+async function remove(req, res) {
+ const { id } = req.params;
+
+  await Author.destroy({ where: { id } });
+
+  res.status(200).json({ message: 'Author has been deleted!'});
+}
+
 module.exports = {
   getAll,
   create,
   deleteAuthor,
   update,
   get,
+  remove,
 }
