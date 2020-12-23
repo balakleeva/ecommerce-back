@@ -6,6 +6,7 @@ const adminAuthMiddleware = require('../../middleware/authAdmin')
 // const joiMiddleware = require('../../middleware/joi');
 const clientAuthMiddleware = require('../../middleware/authClient')
 
+purchase.get('/staff-kpi', controller.staffKpi);
 purchase.get('/', adminAuthMiddleware, controller.getAll)
 purchase.get('/search', adminAuthMiddleware, controller.search)
 purchase.get('/most-expensive', adminAuthMiddleware, controller.mostExpensive)
