@@ -12,7 +12,7 @@ async function getOne(req, res) {
   const { id } = req.params
   const book = await Book.findOne({
     where: { id },
-    include: ['genre', 'author'],
+    include: ['genre', { as: 'author', model: Author, paranoid: false }],
   })
 
   res.status(200).json({ data: book })
