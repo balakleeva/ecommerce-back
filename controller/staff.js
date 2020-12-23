@@ -59,9 +59,41 @@ async function search(req, res) {
   res.status(200).json({ data: staff })
 }
 
+async function get(req, res) {
+  const { id } = req.params;
+
+  const staff = await Staff.findOne({ where: { id }});
+
+  if (!staff) {
+    return res.status(404).json({ message: 'Staff not found!'});
+  }
+
+  res.status(200).json({ data: staff });
+}
+
+async function update(req, res) {
+  const { id } = req.params;
+  const staff = await Staff.findOne({ where: { id }});
+
+  if (!staff) {
+    return res.status(404).json({ message: 'Staff not found!'});
+  }
+
+  const { name, role } = req.body;
+
+  staff.name = name;
+  staff.role = role;
+
+  await staff.save();
+
+  res.status(200).json({ data: staff });
+}
+
 module.exports = {
   auth,
   create,
   getAll,
   search,
+  get,
+  update,
 }
