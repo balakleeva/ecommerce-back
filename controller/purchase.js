@@ -13,7 +13,8 @@ async function getOne(req, res) {
 
   const purchase = await Purchase.findOne({
     where: { id },
-    include: [{ model: Book, paranoid: false }, 'client', 'staff'],
+    include: [{ model: Book, paranoid: false },
+      { as: 'client', model: Client, paranoid: false }, 'staff'],
   });
 
   res.status(200).json({ data: purchase });
@@ -118,6 +119,7 @@ async function search(req, res) {
         as: 'client',
         where: clientParams,
         required: withoutClient === 'false',
+        paranoid: false,
       },
     ],
   });

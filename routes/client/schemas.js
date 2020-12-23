@@ -11,6 +11,9 @@ const schemas = {
         login: Joi.string().min(5).required(),
         password: Joi.string().min(5).required(),
     }),
+    params: Joi.object({
+        id: Joi.string().required(),
+    }),
 };
 
 module.exports = schemas;

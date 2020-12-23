@@ -35,8 +35,17 @@ async function auth(req, res) {
   res.status(200).json({ data: token });
 }
 
+async function remove(req, res) {
+  const { id } = req.params;
+
+  await Client.destroy({ where: { id }});
+
+  res.status(200).json({ message: 'Client has been deleted!'});
+}
+
 module.exports = {
   getAll,
   create,
   auth,
+  remove,
 }

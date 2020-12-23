@@ -81,6 +81,7 @@ async function search(req, res) {
         model: Client,
         as: 'client',
         where: clientParams,
+        paranoid: false,
       },
     ],
   })

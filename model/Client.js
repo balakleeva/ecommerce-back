@@ -28,6 +28,7 @@ module.exports = (sequelize) => {
     },
   }, {
     sequelize,
+    paranoid: false,
   });
 
   Client.beforeCreate(async (user) => {

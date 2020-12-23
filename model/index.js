@@ -30,6 +30,8 @@ Rent.belongsToMany(Book, { through: 'Book_Rent' })
 
 Order.Client = Order.belongsTo(Client, { as: 'client' })
 
+
+
 // Genre.sync({ force: true });
 // Book.sync({ force: true });
 // Purchase.sync({ force: true });
@@ -44,6 +46,9 @@ Order.Client = Order.belongsTo(Client, { as: 'client' })
 //   password: 'restart987',
 //   role: 'директор'
 // })
+
+// Purchase.destroy({});
+//
 
 module.exports = {
   sequelize,
