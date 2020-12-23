@@ -21,7 +21,7 @@ async function update(req, res) {
   const genre = await Genre.findOne({ where: { id } });
 
   if (!genre) {
-    return res.status(404).json({ message: 'Book is not found!' });
+    return res.status(404).json({ message: 'Genre is not found!' });
   }
 
   genre.name = name;
@@ -37,10 +37,17 @@ async function get(req, res) {
   const genre = await Genre.findOne({ where: { id } });
 
   if (!genre) {
-    return res.status(404).json({ message: 'Book is not found!' });
+    return res.status(404).json({ message: 'Genre is not found!' });
   }
 
   res.status(200).json({ data: genre });
+}
+
+async function remove(req, res) {
+  const { id } = req.params;
+  await Genre.destroy({ where: { id }});
+
+  res.status(200).json({ message: 'Genre has been deleted!' });
 }
 
 module.exports = {
@@ -48,4 +55,5 @@ module.exports = {
   create,
   update,
   get,
+  remove,
 };

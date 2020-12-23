@@ -1,4 +1,4 @@
-const { Book, Author, sequelize } = require('../model')
+const { Book, Author, sequelize, Genre } = require('../model')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
@@ -12,7 +12,10 @@ async function getOne(req, res) {
   const { id } = req.params
   const book = await Book.findOne({
     where: { id },
-    include: ['genre', { as: 'author', model: Author, paranoid: false }],
+    include: [
+      { as: 'genre', model: Genre, paranoid: false },
+      { as: 'author', model: Author, paranoid: false },
+      ],
   })
 
   res.status(200).json({ data: book })
