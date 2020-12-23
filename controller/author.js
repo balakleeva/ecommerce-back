@@ -22,8 +22,41 @@ async function deleteAuthor(req, res) {
   res.send(200).json({ message: 'Author has been removed!' });
 }
 
+async function get(req, res) {
+  const { id } = req.params;
+
+  const data = await Author.findOne({ where: { id } });
+
+  if (!data) {
+    return res.status(404).json({ message: 'Author not found!' });
+  }
+
+  res.status(200).json({ data });
+}
+
+async function update(req, res) {
+  const { id } = req.params;
+
+  const data = await Author.findOne({ where: { id } });
+
+  if (!data) {
+    return res.status(404).json({ message: 'Author not found!' });
+  }
+
+  const { name, bio } = req.body;
+
+  data.name = name;
+  data.bio = bio;
+
+  await data.save();
+
+  res.status(200).json({ data });
+}
+
 module.exports = {
   getAll,
   create,
-  deleteAuthor
+  deleteAuthor,
+  update,
+  get,
 }
