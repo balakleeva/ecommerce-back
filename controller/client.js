@@ -16,6 +16,17 @@ async function create(req, res) {
   res.status(200).json({ message: 'Successful registration!' });
 }
 
+async function createAdmin(req, res) {
+  const { name, phoneNumber } = req.body;
+
+  const login = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  const password = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+
+  await Client.create({ name, phone: phoneNumber, password, login });
+
+  res.status(200).json({ message: 'Successful registration!' });
+}
+
 async function auth(req, res) {
   const { login, password } = req.body;
 
@@ -48,4 +59,5 @@ module.exports = {
   create,
   auth,
   remove,
+  createAdmin
 }
